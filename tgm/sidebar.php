@@ -228,7 +228,7 @@
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a href="../dashboard.php" class="nav-link">
+            <a href="../tgm/dashboard.php" class="nav-link">
                 <i class="bi bi-speedometer2"></i> <span class="menu-text">Dashboard</span>
             </a>
         </li>
@@ -258,11 +258,11 @@
                 <i class="bi bi-bar-chart-line"></i> <span class="menu-text">Hasil Akhir</span>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a href="./Hasil/hasil.php" class="nav-link">
                 <i class="bi bi-flag"></i> <span class="menu-text">Laporan</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 
     <hr>
