@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Bulan Mei 2025 pada 13.46
+-- Waktu pembuatan: 18 Bulan Mei 2025 pada 19.20
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -168,13 +168,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nip`, `username`, `password`, `role`, `created_at`) VALUES
-(1, 'HRD001', 'hrd_tgm', '*F6DB628A9D74B903A998BB04961B704B39EB6B40', 'hrd_tgm', '2025-05-13 09:33:18'),
-(2, 'HRD002', 'hrd_bestama', '*874E522B56CBC59592743D14368648BCF7CA974F', 'hrd_bestama', '2025-05-13 09:33:18'),
-(3, 'HRD003', 'hrd_wisyam', '*9371ED0EB0BDC203AF52D6955D5750BCAE1B9F70', 'hrd_wisyam', '2025-05-13 09:33:18'),
-(4, 'HRD004', 'hrd_foleya', '*E4147FE40C1F7F6A9F0A11542DEAAD07948BF7CC', 'hrd_foleya', '2025-05-13 09:33:18'),
-(5, 'HRD005', 'hrd_karis', '*B5436F6DAAF2D5DE5609495CC1B5EC079441D4EE', 'hrd_karis', '2025-05-13 09:33:18'),
-(6, 'HRD006', 'managerhrd', '*1B2333B70420F3DB5F4F164A9B89E21810F06840', 'manager_hrd', '2025-05-13 09:33:18'),
-(7, 'HRD007', 'direkturutama', '*215B942224337D8C13F4F6002038FC2A957E96DE', 'direktur_utama', '2025-05-13 09:33:18');
+(1, 'HRD001', 'hrd_tgm', '$2y$10$YYZPA321kTjn.cqa3MYkN.UAOxC0eT8nSQdpvhz.1rse2YzSW0cWm', 'hrd_tgm', '2025-05-18 15:54:23'),
+(2, 'HRD002', 'hrd_bestama', '$2y$10$dEuHkOjkOoKMucs2fbzSTuZ6ioySlizmThy7rw6gUfRgVoc6VPxuu', 'hrd_bestama', '2025-05-18 15:54:23'),
+(3, 'HRD003', 'hrd_wisyam', '$2y$10$DKHvB0B4DwO4b5P0qybZXuPw8Bpj4/zDMQX/LnLKGygeVwbW6zTbG', 'hrd_wisyam', '2025-05-18 15:54:23'),
+(4, 'HRD004', 'hrd_foleya', '$2y$10$IktDVkeXC8JeMljtDSHOBeTVwA9sHjAa.664cZhYNTdIsvLVS25e2', 'hrd_foleya', '2025-05-18 15:54:23'),
+(5, 'HRD005', 'hrd_karis', '$2y$10$LZYL.O8ZNB16c1I2VAyQhOVixQYhoDCUgO5oLOtIRNfkWZ8MLALxG', 'hrd_karis', '2025-05-18 15:54:23'),
+(6, 'HRD006', 'managerhrd', '$2y$10$pXkX/guHGtZhx9BnLFrW6uuGQFa.pqMY2hM05qbBK.EzePSdM5EOi', 'manager_hrd', '2025-05-18 15:54:23'),
+(7, 'HRD007', 'direkturutama', '$2y$10$mNv5SF6uH0vi.WUaJfhHdOEJSs2gMkFtXxybe1gg9KBoXj9J5swJi', 'direktur_utama', '2025-05-18 15:54:23');
 
 --
 -- Indexes for dumped tables
