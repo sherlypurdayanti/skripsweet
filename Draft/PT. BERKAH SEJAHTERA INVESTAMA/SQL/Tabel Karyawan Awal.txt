@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS bestama_skripsi;
+USE bestama_skripsi;
+
+CREATE TABLE IF NOT EXISTS tabel_karyawan (
+    no INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20) NOT NULL UNIQUE,
+    nama VARCHAR(100) NOT NULL,
+    bagian VARCHAR(100) NOT NULL,
+    jabatan VARCHAR(100) NOT NULL
+);

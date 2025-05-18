@@ -1,0 +1,27 @@
+-- Insert untuk Staff HRD TGM
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD001', 'hrd_tgm', PASSWORD('tgm99'), 'hrd_tgm');
+
+-- Insert untuk Staff HRD Bestama
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD002', 'hrd_bestama', PASSWORD('bestama123'), 'hrd_bestama');
+
+-- Insert untuk Staff HRD Wisyam
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD003', 'hrd_wisyam', PASSWORD('wisyam123'), 'hrd_wisyam');
+
+-- Insert untuk Staff HRD Foleya
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD004', 'hrd_foleya', PASSWORD('foleya123'), 'hrd_foleya');
+
+-- Insert untuk Staff HRD Karis
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD005', 'hrd_karis', PASSWORD('karis123'), 'hrd_karis');
+
+-- Insert untuk Manager HRD
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD006', 'managerhrd', PASSWORD('manager123'), 'manager_hrd');
+
+-- Insert untuk Direktur Utama
+INSERT INTO `users` (`nip`, `username`, `password`, `role`) VALUES
+('HRD007', 'direkturutama', PASSWORD('direktur123'), 'direktur_utama');
