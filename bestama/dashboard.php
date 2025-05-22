@@ -1,3 +1,14 @@
+<?php
+include "../config/koneksi.php";
+
+// Ambil tahun aktif dari database
+$query = $koneksi->query("SELECT tahun FROM periode_penilaian ORDER BY tahun DESC LIMIT 1");
+if ($query && $data = $query->fetch_assoc()) {
+    $tahun_aktif = $data['tahun'];
+} else {
+    $tahun_aktif = date('Y'); // fallback ke tahun saat ini jika tidak ada data
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -7,21 +18,21 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<style>
+  <style>
     #content {
-    margin-left: 250px; /* menyesuaikan lebar sidebar */
-    padding: 20px;
-    width: calc(100% - 250px);
-  }
-  .bg-custom {
-    background-color: #044885 !important;
-    color: white !important;
-  }
-</style>
+      margin-left: 250px;
+      padding: 20px;
+      width: calc(100% - 250px);
+    }
+    .bg-custom {
+      background-color: #044885 !important;
+      color: white !important;
+    }
+  </style>
+</head>
 <body>
 <input type="hidden" id="tahunAktif" value="<?= $tahun_aktif ?>">
-<?php include "sidebar.php" ?>
+<?php include "sidebar.php"; ?>
 
 <!-- Konten -->
 <div class="container-fluid py-4" id="content">
@@ -35,7 +46,6 @@
 
     <div class="card-body">
       <div class="row">
-
         <!-- Skor Rata-Rata -->
         <div class="col-xl-4 col-md-6 mb-4">
           <div class="text-center fw-bold text-uppercase mb-2">Skor Rata - Rata Penilaian</div>
@@ -53,7 +63,6 @@
           <div class="text-center fw-bold text-uppercase mb-2">Penilai</div>
           <canvas id="reviewersChart" style="width: 100%; height: 250px;"></canvas>
         </div>
-
       </div>
     </div>
   </div>
@@ -64,7 +73,40 @@
 
 <!-- Chart.js Config -->
 <script>
-  // Skor Rata-Rata (Bar Chart)
+  document.addEventListener('DOMContentLoaded', function () {
+    const tahunSelect = document.querySelector('select[name="tahun"]');
+    const periodeSelect = document.querySelector('select[name="nama_periode"]');
+    const tglMulai = document.querySelector('input[name="tanggal_mulai"]');
+    const tglSelesai = document.querySelector('input[name="tanggal_selesai"]');
+
+    function updateTanggal() {
+        const tahun = parseInt(tahunSelect.value);
+        const periode = periodeSelect.value;
+
+        if (!tahun || !periode) return;
+
+        if (periode.toLowerCase().includes('januari')) {
+            // Periode Januari - Juni
+            tglMulai.value = `${tahun}-06-03`;
+            tglSelesai.value = `${tahun}-07-02`;
+        } else if (periode.toLowerCase().includes('juli')) {
+            // Periode Juli - Desember
+            const nextYear = tahun + 1;
+            tglMulai.value = `${tahun}-12-03`;
+            tglSelesai.value = `${nextYear}-01-02`;
+        } else {
+            tglMulai.value = "";
+            tglSelesai.value = "";
+        }
+    }
+    // Jalankan saat halaman dimuat
+    updateTanggal();
+
+    // Jalankan ulang saat pilihan tahun atau periode berubah
+    tahunSelect.addEventListener('change', updateTanggal);
+    periodeSelect.addEventListener('change', updateTanggal);
+});
+  // Skor Rata-Rata
   new Chart(document.getElementById('avgScoreChart'), {
     type: 'bar',
     data: {
@@ -86,7 +128,7 @@
     }
   });
 
-  // Perbandingan Penilaian (Bar Chart)
+  // Perbandingan Penilaian
   new Chart(document.getElementById('comparisonChart'), {
     type: 'bar',
     data: {
@@ -108,7 +150,7 @@
     }
   });
 
-  // Penilai (Pie Chart)
+  // Penilai (Pie)
   new Chart(document.getElementById('reviewersChart'), {
     type: 'pie',
     data: {
