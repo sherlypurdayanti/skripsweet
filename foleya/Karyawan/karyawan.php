@@ -46,7 +46,6 @@ include '../../config/koneksi.php';
               }
             ?>
           </select>
-          <button class="btn btn-light" type="button" onclick="filterData()">Cari</button>
         </div>
       </div>
     </div>
@@ -90,6 +89,7 @@ include '../../config/koneksi.php';
               <button class="btn btn-info" onclick="showDetailKaryawan(
                 '<?= htmlspecialchars($row['nip'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['nama'], ENT_QUOTES) ?>',
+                '<?= htmlspecialchars($row['jenis_kelamin'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['bagian'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['jabatan'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['tanggal_masuk'], ENT_QUOTES) ?>',
@@ -101,6 +101,7 @@ include '../../config/koneksi.php';
               <button class="btn btn-sm btn-warning text-white" onclick="showEditModal(
                 '<?= htmlspecialchars($row['nip'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['nama'], ENT_QUOTES) ?>',
+                '<?= htmlspecialchars($row['jenis_kelamin'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['bagian'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['jabatan'], ENT_QUOTES) ?>',
                 '<?= htmlspecialchars($row['tanggal_masuk'], ENT_QUOTES) ?>',
@@ -141,6 +142,11 @@ include '../../config/koneksi.php';
             <div class="mb-3">
               <label for="nama" class="form-label">Nama Lengkap</label>
               <input type="text" class="form-control" id="nama" name="nama" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+              <input type="text" class="form-control" id="nama" name="jenis_kelamin" required>
             </div>
 
             <div class="mb-3">
@@ -200,6 +206,10 @@ include '../../config/koneksi.php';
           <div class="mb-3">
             <label for="detailNama" class="form-label">Nama</label>
             <input type="text" class="form-control" id="detailNama" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="detailJenis_kelamin" class="form-label">Jenis Kelamin</label>
+            <input type="text" class="form-control" id="detailJenis_kelamin" disabled>
           </div>
           <div class="mb-3">
             <label for="detailBagian" class="form-label">Bagian</label>
@@ -311,9 +321,10 @@ include '../../config/koneksi.php';
     editModal.show();
   }
 
-  function showDetailKaryawan(nip, nama, bagian, jabatan, tanggalMasuk, status, perusahaan) {
+  function showDetailKaryawan(nip, nama, jenis_kelamin, bagian, jabatan, tanggalMasuk, status, perusahaan) {
     document.getElementById("detailNip").value = nip;
     document.getElementById("detailNama").value = nama;
+    document.getElementById("detailJenis_kelamin").value = jenis_kelamin;
     document.getElementById("detailBagian").value = bagian;
     document.getElementById("detailJabatan").value = jabatan;
     document.getElementById("detailTanggalMasuk").value = tanggalMasuk;
@@ -351,8 +362,3 @@ include '../../config/koneksi.php';
 
 </body>
 </html>
-
-
-
-
-    

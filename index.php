@@ -33,6 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       // Redirect berdasarkan role
       switch ($data['role']) {
+        case 'admin':
+          header('Location: admin/dashboard.php');
+          break;
+        case 'karyawan':
+          header('Location: karyawan/dashboard.php');
+          break;
+        case 'manager_bagian':
+          header('Location: manager_bagian/dashboard.php');
+          break;
         case 'hrd_tgm':
           header('Location: tgm/dashboard.php');
           break;
@@ -54,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'direktur_utama':
           header('Location: direktur/dashboard.php');
           break;
+
         default:
           header('Location: default_dashboard.php');
       }
@@ -73,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | Aplikasi Anda</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title> SISTEM PENILAIAN KINERJA KARYAWAN</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <style>
@@ -170,6 +181,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <input type="password" id="password" name="password" placeholder="Masukkan password" required>
         </div>
         <button type="submit">Login</button>
+
+        <!-- Tambahan tautan buat akun -->
+        <p style="margin-top: 16px; font-size: 14px;">
+          <a href="register.php" style="color: #2575fc; text-decoration: none;">
+            <i class="fas fa-user-plus"></i> Buat akun
+          </a> | 
+          <a href="lupa_password.php" style="color: #2575fc; text-decoration: none;">
+            <i class="fas fa-unlock-alt"></i> Lupa Password?
+          </a>
+        </p>
       </form>
     </div>
   </div>

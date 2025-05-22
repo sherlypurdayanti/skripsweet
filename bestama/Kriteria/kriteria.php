@@ -12,7 +12,7 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>Data Kriteria</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+  <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -54,53 +54,73 @@
                   <th>Nama Kriteria</th>
                   <th>Bobot Atasan</th>
                   <th>Bobot Rekan Kerja</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result)) : ?>
-                  <tr>
-                    <td><?= htmlspecialchars($row['id']) ?></td>
-                    <td><?= htmlspecialchars($row['nama_kriteria']) ?></td>
-                    <td class="text-center"><?= $row['bobot_atasan'] !== null ? $row['bobot_atasan'] . "%" : "-" ?></td>
-                    <td class="text-center"><?= $row['bobot_rekan'] !== null ? $row['bobot_rekan'] . "%" : "-" ?></td>
-                    <td class="text-center">
-                      <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row['id'] ?>">Edit</button>
-                    </td>
-                  </tr>
+                  <?php while ($row = mysqli_fetch_assoc($result)): 
+                    if ($row['bobot_atasan'] > 0):
+                      $statusLabel = $row['status_aktif'] ? 'Aktif' : 'Nonaktif';
+                      $btnClass = $row['status_aktif'] ? 'btn-danger' : 'btn-success';
+                      $nextStatus = $row['status_aktif'] ? 0 : 1;
+                      $labelTombol = $row['status_aktif'] ? 'Nonaktifkan' : 'Aktifkan';
+                  ?>
+                    <tr>
+                      <td><?= $row['id_kriteria'] ?></td>
+                      <td><?= $row['nama_kriteria'] ?></td>
+                      <td class='text-center'><?= $row['bobot_atasan'] ?>%</td>
+                      <td class='text-center'><?= $row['bobot_rekan'] ?>%</td>
+                      <td class='text-center'><?= $statusLabel ?></td>
+                      <td class='text-center'>
+                      <button 
+                        class='btn btn-sm toggle-status-btn <?= $btnClass ?>' 
+                        data-id_kriteria='<?= $row['id_kriteria'] ?>' 
+                        data-status='<?= $row['status_aktif'] ?>'>
+                        <?= $labelTombol ?>
+                      </button>
+                        <button class='btn btn-sm btn-warning' data-bs-toggle='modal' data-bs-target='#modalEdit<?= $row['id_kriteria'] ?>'>
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
 
-                  <!-- Modal Edit -->
-                  <div class="modal fade" id="modalEdit<?= $row['id'] ?>" tabindex="-1">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="edit_kriteria.php" method="post" class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Edit Kriteria</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <!-- Modal Edit -->
+                    <div class="modal fade" id="modalEdit<?= $row['id_kriteria'] ?>" tabindex="-1">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form action="edit_kriteria.php" method="post" class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Edit Kriteria</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                             <input type="hidden" name="id_kriteria" value="<?= $row['id_kriteria'] ?>">
+                              <div class="mb-3">
+                                <label>Nama Kriteria</label>
+                                <input type="text" name="nama_kriteria" class="form-control" value="<?= htmlspecialchars($row['nama_kriteria']) ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Bobot Atasan (%)</label>
+                                <input type="number" name="bobot_atasan" class="form-control" value="<?= $row['bobot_atasan'] ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Bobot Rekan (%)</label>
+                                <input type="number" name="bobot_rekan" class="form-control" value="<?= $row['bobot_rekan'] ?>" required>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            </div>
+                          </form>
                         </div>
-                        <div class="modal-body">
-                          <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                          <div class="mb-3">
-                            <label>Nama Kriteria</label>
-                            <input type="text" name="nama_kriteria" class="form-control" value="<?= htmlspecialchars($row['nama_kriteria']) ?>" required>
-                          </div>
-                          <div class="mb-3">
-                            <label>Bobot Atasan (%)</label>
-                            <input type="number" name="bobot_atasan" class="form-control" value="<?= $row['bobot_atasan'] ?>" required>
-                          </div>
-                          <div class="mb-3">
-                            <label>Bobot Rekan (%)</label>
-                            <input type="number" name="bobot_rekan" class="form-control" value="<?= $row['bobot_rekan'] ?>" required>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                      </form>
+                      </div>
                     </div>
-                  </div>
-                <?php endwhile; ?>
-              </tbody>
+                  <?php 
+                    endif;
+                  endwhile; 
+                  ?>
+                  </tbody>
             </table>
           </div>
         </div>
@@ -117,6 +137,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
+          <div class="mb-3">
+            <label>Id Kriteria</label>
+            <input type="text" name="nama_kriteria" class="form-control" required>
+          </div>
           <div class="mb-3">
             <label>Nama Kriteria</label>
             <input type="text" name="nama_kriteria" class="form-control" required>
@@ -137,29 +161,74 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const tambahModal = document.getElementById('modalTambah');
+  <!-- jQuery harus lebih dahulu -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    // Reset form dan fokus ke input saat modal tambah dibuka
-    tambahModal.addEventListener('show.bs.modal', function () {
-      const form = tambahModal.querySelector('form');
-      form.reset();
-      setTimeout(() => {
-        form.querySelector('[name="nama_kriteria"]').focus();
-      }, 300);
+<script>
+  $(document).ready(function () {
+    $('.toggle-status-btn').click(function () {
+      const btn = $(this);
+      const id = btn.data('id_kriteria'); // ← sesuaikan atribut HTML-nya
+      const currentStatus = btn.data('status');
+      const newStatus = currentStatus == 1 ? 0 : 1;
+
+      btn.prop('disabled', true); // cegah klik ganda
+
+      $.ajax({
+        url: 'toggle_status.php',
+        method: 'POST',
+        data: {
+          id_kriteria: id,
+          status_aktif: newStatus
+        },
+        success: function (response) {
+          if (response.trim() === 'success') {
+            btn.data('status', newStatus);
+            btn.toggleClass('btn-success btn-danger');
+            btn.text(newStatus == 1 ? 'Nonaktifkan' : 'Aktifkan');
+            btn.closest('tr').find('td:nth-child(5)').text(newStatus == 1 ? 'Aktif' : 'Nonaktif');
+          } else {
+            alert('Gagal mengubah status: ' + response);
+          }
+        },
+        error: function () {
+          alert('Terjadi kesalahan saat menghubungi server.');
+        },
+        complete: function () {
+          btn.prop('disabled', false);
+        }
+      });
     });
 
-    // Validasi bobot pada form tambah dan edit (prevent angka negatif)
+    // Reset form tambah saat modal dibuka
+    const tambahModal = document.getElementById('modalTambah');
+    if (tambahModal) {
+      tambahModal.addEventListener('show.bs.modal', function () {
+        const form = tambahModal.querySelector('form');
+        form.reset();
+        setTimeout(() => {
+          form.querySelector('[name="nama_kriteria"]').focus();
+        }, 300);
+      });
+    }
+
+    // Validasi bobot tidak negatif atau >100
     document.querySelectorAll('form').forEach(form => {
       form.addEventListener('submit', function (e) {
-        const bobotAtasan = form.querySelector('[name="bobot_atasan"]');
-        const bobotRekan = form.querySelector('[name="bobot_rekan"]');
-        
-        if (bobotAtasan.value < 0 || bobotRekan.value < 0) {
+        const bAtasan = form.querySelector('[name="bobot_atasan"]');
+        const bRekan = form.querySelector('[name="bobot_rekan"]');
+        if (!bAtasan || !bRekan) return;
+
+        const atasanVal = parseFloat(bAtasan.value);
+        const rekanVal = parseFloat(bRekan.value);
+
+        if (atasanVal < 0 || rekanVal < 0) {
           e.preventDefault();
-          alert('Bobot tidak boleh bernilai negatif.');
+          alert('Bobot tidak boleh negatif.');
+        } else if (atasanVal > 100 || rekanVal > 100) {
+          e.preventDefault();
+          alert('Bobot tidak boleh lebih dari 100%.');
         }
       });
     });

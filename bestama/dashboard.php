@@ -1,53 +1,62 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<style>
+    #content {
+    margin-left: 250px; /* menyesuaikan lebar sidebar */
+    padding: 20px;
+    width: calc(100% - 250px);
+  }
+  .bg-custom {
+    background-color: #044885 !important;
+    color: white !important;
+  }
+</style>
 <body>
-
+<input type="hidden" id="tahunAktif" value="<?= $tahun_aktif ?>">
 <?php include "sidebar.php" ?>
 
 <!-- Konten -->
-<div class="content" id="content">
-<h2>Dashboard</h2>
-    <div class="row">
+<div class="container-fluid py-4" id="content">
+  <div class="card shadow">
+    <div class="card-header bg-custom text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Dashboard - Tahun <?= $tahun_aktif ?></h4>
+      <a href="atur_penilaian.php" class="btn btn-light btn-sm text-dark">
+        <i class="bi bi-gear me-1"></i> Atur Penilaian
+      </a>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+
         <!-- Skor Rata-Rata -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card text-black shadow h-100 py-2">
-              <div class="card-body">
-              <div class="text-center fw-bold text-uppercase mb-3">Skor Rata - Rata Penilaian</div>
-                <canvas id="avgScoreChart" height="200"></canvas>
-              </div>
-            </div>
+          <div class="text-center fw-bold text-uppercase mb-2">Skor Rata - Rata Penilaian</div>
+          <canvas id="avgScoreChart" height="200"></canvas>
         </div>
 
         <!-- Perbandingan Penilaian -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card text-black shadow h-100 py-2">
-              <div class="card-body">
-              <div class="text-center fw-bold text-uppercase mb-3">Perbandingan Penilaian</div>
-                <canvas id="comparisonChart" height="200"></canvas>
-              </div>
-            </div>
+          <div class="text-center fw-bold text-uppercase mb-2">Perbandingan Penilaian</div>
+          <canvas id="comparisonChart" height="200"></canvas>
         </div>
 
         <!-- Penilai -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card text-black shadow h-100 py-2">
-              <div class="card-body">
-                <div class="text-center fw-bold text-uppercase mb-3">Penilai</div>
-                <canvas id="reviewersChart" style="width: 250px; height: 250px;"></canvas>
-              </div>
-            </div>
+          <div class="text-center fw-bold text-uppercase mb-2">Penilai</div>
+          <canvas id="reviewersChart" style="width: 100%; height: 250px;"></canvas>
         </div>
+
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Bootstrap JS -->
@@ -111,9 +120,9 @@
       }]
     },
     options: {
-    responsive: false,
-    maintainAspectRatio: false
-  }
+      responsive: false,
+      maintainAspectRatio: false
+    }
   });
 </script>
 
