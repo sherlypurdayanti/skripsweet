@@ -2,7 +2,8 @@
 include '../config/koneksi.php';
 
 // Fungsi ambil nilai enum
-function getEnumValues($koneksi, $table, $column) {
+function getEnumValues($koneksi, $table, $column)
+{
     $result = $koneksi->query("SHOW COLUMNS FROM `$table` LIKE '$column'");
     $row = $result->fetch_assoc();
     preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
@@ -41,96 +42,114 @@ while ($p = $res_periode->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <title>Admin Penilaian</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f1f4f9; }
-        #content { margin-left: 250px; padding: 20px; }
-        .card { margin-bottom: 30px; }
+        body {
+            background-color: #f1f4f9;
+        }
+
+        #content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .card {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
+
 <body>
-<?php include 'sidebar.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
-<div id="content" class="container-fluid">
-    <?php if ($message): ?>
-        <div class="alert alert-success"><?= $message ?></div>
-    <?php endif; ?>
+    <div id="content" class="container-fluid">
+        <?php if ($message): ?>
+            <div class="alert alert-success"><?= $message ?></div>
+        <?php endif; ?>
 
-    <!-- Form tambah periode penilaian -->
-    <div class="card">
-        <div class="card-header bg-primary text-white">Tambah Periode Penilaian</div>
-        <div class="card-body">
-            <form method="POST">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Nama Periode</label>
-                        <select name="nama_periode" class="form-select" required>
-                            <option value="">-- Pilih Periode --</option>
-                            <?php foreach ($nama_periode_options as $val): ?>
-                                <option value="<?= htmlspecialchars($val) ?>"><?= htmlspecialchars($val) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+        <!-- Form tambah periode penilaian -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">Tambah Periode Penilaian</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Nama Periode</label>
+                            <select name="nama_periode" id="nama_periode" class="form-select" required>
+                                <option value="">-- Pilih Periode --</option>
+                                <?php foreach ($nama_periode_options as $val): ?>
+                                    <option value="<?= htmlspecialchars($val) ?>"><?= htmlspecialchars($val) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tahun</label>
+                            <select name="tahun" id="tahun" class="form-select" required>
+                                <?php for ($i = date("Y") - 5; $i <= date("Y") + 1; $i++): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Mulai</label>
+                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" readonly required>
+                        </div>
+                        <div class="col-md-4 mt-2">
+                            <label>Tanggal Selesai</label>
+                            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" readonly required>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label>Tahun</label>
-                        <select name="tahun" class="form-select" required>
-                            <?php for ($i = date("Y") - 5; $i <= date("Y") + 1; $i++): ?>
-                                <option value="<?= $i ?>"><?= $i ?></option>
-                            <?php endfor; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai" class="form-control" readonly required>
-                    </div>
-                    <div class="col-md-4 mt-2">
-                        <label>Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai" class="form-control" readonly required>
-                    </div>
+                    <button type="submit" name="save_periode" class="btn btn-success mt-3">Simpan Periode</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Daftar periode penilaian -->
+        <?php if (!empty($periode_options)): ?>
+            <div class="card">
+                <div class="card-header bg-info text-white">Daftar Periode Penilaian</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <?php foreach ($periode_options as $periode): ?>
+                            <li class="list-group-item"><?= htmlspecialchars($periode['label']) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
-                <button type="submit" name="save_periode" class="btn btn-success mt-3">Simpan Periode</button>
-            </form>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
 
-    <!-- Daftar periode penilaian -->
-    <?php if (!empty($periode_options)): ?>
-    <div class="card">
-        <div class="card-header bg-info text-white">Daftar Periode Penilaian</div>
-        <div class="card-body">
-            <ul class="list-group">
-                <?php foreach ($periode_options as $periode): ?>
-                    <li class="list-group-item"><?= htmlspecialchars($periode['label']) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </div>
-    <?php endif; ?>
-</div>
+    <script>
+        document.getElementById('nama_periode').addEventListener('change', setDates);
+        document.getElementById('tahun').addEventListener('change', setDates);
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tahunSelect = document.querySelector('select[name="tahun"]');
-        const tglMulai = document.querySelector('input[name="tanggal_mulai"]');
-        const tglSelesai = document.querySelector('input[name="tanggal_selesai"]');
+        function setDates() {
+            const periode = document.getElementById('nama_periode').value;
+            const tahun = parseInt(document.getElementById('tahun').value);
+            const tanggalMulai = document.getElementById('tanggal_mulai');
+            const tanggalSelesai = document.getElementById('tanggal_selesai');
 
-        function setTanggalByTahun(tahun) {
-            tglMulai.value = `${tahun}-01-01`;
-            tglSelesai.value = `${tahun}-12-31`;
+            if (periode && tahun) {
+                if (periode.toLowerCase().includes('januari')) {
+                    // Periode Januari - Juni
+                    tanggalMulai.value = `${tahun}-06-03`;
+                    tanggalSelesai.value = `${tahun}-07-02`;
+                } else if (periode.toLowerCase().includes('juli')) {
+                    // Periode Juli - Desember
+                    tanggalMulai.value = `${tahun}-12-03`;
+                    tanggalSelesai.value = `${tahun + 1}-01-02`;
+                } else {
+                    // Kosongkan jika tidak sesuai
+                    tanggalMulai.value = '';
+                    tanggalSelesai.value = '';
+                }
+            }
         }
-
-        // Atur tanggal berdasarkan tahun saat halaman pertama kali dimuat
-        if (tahunSelect) {
-            setTanggalByTahun(tahunSelect.value);
-
-            tahunSelect.addEventListener('change', function () {
-                setTanggalByTahun(this.value);
-            });
-        }
-    });
-</script>
+    </script>
 </body>
+
 </html>
